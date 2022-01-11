@@ -87,7 +87,7 @@ function Plans({ subscriptions }: PlansProps) {
                 <List align="center" spacing={2}>
                   {descritionItems.map((d, i) => {
                     return (
-                      <ListItem>
+                      <ListItem key={s.id+d}>
                         <ListIcon as={MdCheck} color='green.500' />
                         {d}{(i+1) === descritionItems.length? "":";"}
                       </ListItem>
