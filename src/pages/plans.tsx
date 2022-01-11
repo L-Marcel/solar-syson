@@ -42,6 +42,8 @@ function Plans({ subscriptions }: PlansProps) {
           columns={[1, 1, 1, 3]}
           spacing={5}
           m={5}
+          maxH="100%"
+          overflowY="auto"
         >
           {subscriptions.map((s, i) => {
             const descritionItems = s.product.description.split("; ");
