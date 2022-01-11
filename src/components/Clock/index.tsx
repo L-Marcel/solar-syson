@@ -31,18 +31,18 @@ function Clock() {
   return (
     <Box
       position="absolute"
-      p={[2, 6, 12, 24]}
+      p={[4, 6, 12, 24]}
       top={0}
       right={0}
       color="primary.700"
       display="flex"
     >
-      <Heading fontSize={20}>
+      <Heading fontSize={[20, 25, 30]}>
         {date.time}
       </Heading>
       <Icon
-        ml={4}
-        fontSize={[18, 28, 40]}
+        ml={[0, 2, 4]}
+        fontSize={[25, 28, 40]}
         icon={date.hours >= 18 || date.hours < 6 ? "moon":"sun"}
       />
     </Box>
