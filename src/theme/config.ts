@@ -32,10 +32,10 @@ const theme = extendTheme({
         mr: -2
       },
       "::-webkit-scrollbar-track": {
-        background: colors.primary[300]
+        background: colors.primary[700]
       },
       "::-webkit-scrollbar-thumb": {
-        background: colors.primary[400],
+        background: colors.primary[600],
       },
       "::-webkit-scrollbar-thumb:hover": {
         background: colors.primary[500],
