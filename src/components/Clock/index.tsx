@@ -41,8 +41,8 @@ function Clock() {
         {date.time}
       </Heading>
       <Icon
-        ml={[0, 2, 4]}
-        fontSize={[25, 28, 40]}
+        ml={[1, 2, 4]}
+        fontSize={[24, 28, 40]}
         icon={date.hours >= 18 || date.hours < 6 ? "moon":"sun"}
       />
     </Box>
