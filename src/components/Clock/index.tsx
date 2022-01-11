@@ -37,12 +37,12 @@ function Clock() {
       color="primary.700"
       display="flex"
     >
-      <Heading fontSize={[15, 20]}>
+      <Heading fontSize={20}>
         {date.time}
       </Heading>
       <Icon
         ml={4}
-        fontSize={[15, 20, 40]}
+        fontSize={[18, 28, 40]}
         icon={date.hours >= 18 || date.hours < 6 ? "moon":"sun"}
       />
     </Box>
