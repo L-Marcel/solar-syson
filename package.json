@@ -1,5 +1,5 @@
 {
-  "name": "next-start",
+  "name": "solar-sys.on",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,9 +8,19 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.7.4",
+    "@emotion/react": "11",
+    "@emotion/styled": "11",
+    "axios": "^0.24.0",
+    "framer-motion": "5",
     "next": "12.0.7",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "^4.3.1",
+    "react-query": "^3.34.7",
+    "sass": "^1.47.0",
+    "use-context-selector": "^1.3.9",
+    "use-persisted-state": "^0.3.3"
   },
   "devDependencies": {
     "@types/next": "^9.0.0",
