@@ -12,10 +12,10 @@ function Register() {
       <Head>
         <title>Solar Sys.on - Registrar nova conta</title>
       </Head>
+      <Clock/>
       <Box
         p={[6, 12, 24]}
       >
-        <Clock/>
         <Brand text="-> Criar novo usuário"/>
         <VStack maxW={["80%", "60%", "40%", "25%"]}
           mt={5}

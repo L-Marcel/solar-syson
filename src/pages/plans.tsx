@@ -32,12 +32,12 @@ function Plans({ subscriptions }: PlansProps) {
       <Head>
         <title>Solar Sys.on - Escolha seu plano</title>
       </Head>
+      <Clock/>
       <Box
         p={[6, 12, 24]}
         maxH="100vh"
         overflowY="auto"
       >
-        <Clock/>
         <Brand text="-> Escolha seu plano"/>
         <SimpleGrid
           minChildWidth={250}
@@ -61,7 +61,7 @@ function Plans({ subscriptions }: PlansProps) {
                 flexDir="column"
                 alignItems="center"
                 justifyContent="center"
-                {...boxShadow(true)}
+                {...boxShadow()}
               >
                 <Box
                   display="flex"

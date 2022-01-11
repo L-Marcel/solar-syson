@@ -13,10 +13,10 @@ function Login() {
       <Head>
         <title>Solar Sys.on</title>
       </Head>
+      <Clock/>
       <Box 
         p={[6, 12, 24]}
       >
-        <Clock/>
         <Brand/>
         <VStack maxW={["80%", "60%", "40%", "25%"]}
           mt={5}
