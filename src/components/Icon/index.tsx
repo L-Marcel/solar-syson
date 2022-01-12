@@ -8,7 +8,8 @@ const icons = {
   "checkPassword": i.GoLock,
   "moon": i.BsMoonStars,
   "sun": i.FiSun,
-  "sunWithCloud": i.BsCloudSun
+  "sunWithCloud": i.BsCloudSun,
+  "graph": i.MdAutoGraph
 };
 
 interface IconProps extends ChakraIconProps {

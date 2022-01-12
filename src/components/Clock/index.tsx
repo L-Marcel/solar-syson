@@ -31,11 +31,16 @@ function Clock() {
   return (
     <Box
       position="absolute"
-      p={[4, 6, 12, 24]}
+      m={[4, 6, 12, 24]}
+      p={2}
+      mr={2}
+      borderRadius={8}
       top={0}
       right={0}
       color="primary.700"
       display="flex"
+      zIndex={100}
+      bgColor="white"
     >
       <Heading fontSize={[20, 25, 30]}>
         {date.time}
