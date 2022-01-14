@@ -14,9 +14,6 @@ const theme = extendTheme({
         "--primary-500": colors.primary[500],
         "--primary-400": colors.primary[400],
         "--primary-300": colors.primary[300],
-        "--secondary-500": colors.secondary[500],
-        "--secondary-400": colors.secondary[400],
-        "--secondary-300": colors.secondary[300],
         "--white": colors.white,
         "--gray": colors.gray
       },
@@ -67,6 +64,11 @@ const theme = extendTheme({
       ".chakra-checkbox__control:not([data-checked])": {
         color: "var(--primary) !important",
         bgColor: "primary.100"
+      },
+      "li.chakra-toast + li": {
+        ".container": {
+          mt: 0
+        }
       }
     }
   }

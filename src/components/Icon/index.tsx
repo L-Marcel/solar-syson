@@ -2,14 +2,20 @@ import { Icon as ChakraIcon, IconProps as ChakraIconProps } from "@chakra-ui/rea
 import i from "./icons";
 
 const icons = {
+  "login": i.AiOutlineUser,
   "user": i.AiOutlineUser,
+  "username": i.AiOutlineUser,
   "email": i.MdAlternateEmail,
   "password": i.GoLock,
   "checkPassword": i.GoLock,
   "moon": i.BsMoonStars,
   "sun": i.FiSun,
   "sunWithCloud": i.BsCloudSun,
-  "graph": i.MdAutoGraph
+  "graph": i.MdAutoGraph,
+  "success": i.FiCheckCircle,
+  "error": i.BiError,
+  "info": i.VscInfo,
+  "warning": i.MdNearbyError
 };
 
 interface IconProps extends ChakraIconProps {

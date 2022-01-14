@@ -1,11 +1,15 @@
-import { Box, Divider, Heading, List, ListIcon, ListItem, SimpleGrid, Text, VStack } from "@chakra-ui/react";
+import { Box, Divider, Heading, List, ListIcon, ListItem, SimpleGrid, Text, toast, useToast, VStack } from "@chakra-ui/react";
 import { GetStaticProps } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { MdCheck } from "react-icons/md";
-import { Button } from "../components/Button";
-import { Icon } from "../components/Icon";
-import { PageContainer } from "../components/PageContainer";
-import { api } from "../service/api";
-import { boxShadow } from "../theme/effects/shadow";
+import { Button } from "../../components/Button";
+import { Icon } from "../../components/Icon";
+import { PageContainer } from "../../components/PageContainer";
+import { CustomToast } from "../../components/Toast/CustomToast";
+import { useUser } from "../../hooks/useUser";
+import { api } from "../../service/api";
+import { boxShadow } from "../../theme/effects/shadow";
 
 const planIcon = [
   "moon",
@@ -24,7 +28,31 @@ interface PlansProps {
 };
 
 function Plans({ subscriptions }: PlansProps) {
-  console.log(subscriptions);
+  const router = useRouter();
+  const toast = useToast();
+
+  useEffect(() => {
+    if(router.query["toast"] === "subscription.error") {
+      toast({
+        duration: 2000,
+        position: "top-right",
+        render: () => <CustomToast 
+          title="Não foi possível concluir a operação!"
+          status="error"
+        />
+      });
+    };
+  }, [router]);
+
+  
+  async function onSelectPlan(s: Subscription) {
+    await api.post("/user/subscription/session", {
+      subscription: s
+    }).then(({ data }) => {
+      router.replace(data.url);
+    });
+  };
+
   return (
     <PageContainer withoutBrand={false} brandText="-> Escolha seu plano">
       <SimpleGrid
@@ -34,7 +62,7 @@ function Plans({ subscriptions }: PlansProps) {
         m={5}
       >
         {subscriptions.map((s, i) => {
-          const descritionItems = s.product.description.split("; ");
+          const descriptionItems = s.product.description.split("; ");
           return (
             <VStack
               spacing={5}
@@ -75,11 +103,11 @@ function Plans({ subscriptions }: PlansProps) {
                 borderColor="currentcolor"
               />
               <List align="center" spacing={2}>
-                {descritionItems.map((d, i) => {
+                {descriptionItems.map((d, i) => {
                   return (
                     <ListItem key={s.id+d}>
                       <ListIcon as={MdCheck} color='green.500' />
-                      {d}{(i+1) === descritionItems.length? "":";"}
+                      {d}{(i+1) === descriptionItems.length? "":";"}
                     </ListItem>
                   );
                 })}
@@ -98,7 +126,7 @@ function Plans({ subscriptions }: PlansProps) {
                 </Text>
                 <Text>{s.frequency}</Text>
               </Box>
-              <Button>
+              <Button onClick={() => onSelectPlan(s)}>
                 Escolher
               </Button>
             </VStack>

@@ -27,17 +27,18 @@ function DashboardInfoContent({ isOpen, ...rest }: DashboardInfoContent) {
 
   return (
     <Box
-      display={!isOpen? "none":null}
+      display={!isOpen? "none":"flex"}
       minW={500} 
       h="100vh" 
       bgColor="whitesmoke" 
       pt={6}
+      justifyContent="stretch" 
+      flexDir="column"
       {...rest}
     >
       <Box 
         w="100%" 
-        minH={160} 
-        mb={-1} 
+        mb={-1}
         bgColor="whitesmoke"
       >
         { !show && <CircularProgress isIndeterminate color="primary.600" ml={8}>

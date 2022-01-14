@@ -6,26 +6,34 @@ declare type ClockTimer = {
 declare type AppContext = {
   user: User;
   isLoading: boolean;
-  login: (credentials: Credentials, onError: (message: string) => void) => void;
-  checkIsAuth: () => void;
+  login: (credentials: Credentials) => void;
+  logout: () => void;
   token: string;
   setToken: (token: string | boolean) => void;
+  setIsLoading: (isLoading: boolean) => void;
+  errors: ValidationError[];
+  onClearError: (id: string) => void;
+  onResetErrors: () => void;
+};
+
+declare type ValidationError = {
+  message: string;
+  id: string;
+};
+
+declare type RegisterCredentials = {
+  username: string;
+  email: string;
+  password: string;
+  checkPassword: string;
 };
 
 declare type User = {
   id: string;
   username: string;
-  login: string;
-  password: string;
-  created_at: Date;
-  models: Models;
-};
-
-declare type Models = {
-  growatt: {
-    login: string;
-    password: string;
-  } | boolean;
+  email: string;
+  customer: string;
+  subscription: string;
 };
 
 declare type Credentials = {
