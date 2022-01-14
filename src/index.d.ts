@@ -7,7 +7,7 @@ declare type AppContext = {
   user: User;
   isLoading: boolean;
   login: (credentials: Credentials) => void;
-  logout: () => void;
+  logout: () => Promise<boolean>;
   token: string;
   setToken: (token: string | boolean) => void;
   setIsLoading: (isLoading: boolean) => void;

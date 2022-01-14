@@ -24,7 +24,7 @@ function AppProvider ({ children }: AppProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if(token) {
+    if(token && token !== null) {
       setCookie(null, "token", token);
     };
   }, [token]);
@@ -32,6 +32,15 @@ function AppProvider ({ children }: AppProviderProps) {
   useEffect(() => {
     api.interceptors.response.use(res => res, (err: AxiosError) => {
       if(err.response.status === 401) {
+        if(err.request.responseURL.includes("login")){
+          setErrors(e => {
+            return [ ...new Set<ValidationError>([ ...e, {
+              id: "login",
+              message: err.response.data.message
+            }])];
+          });  
+        };
+
         if(token) {
           api.defaults.headers["authorization"] = "Bearer " + token;
           return new Promise((resolve, reject) => {
@@ -39,20 +48,13 @@ function AppProvider ({ children }: AppProviderProps) {
             return resolve(api(err.config));
           });
         };
+
         setIsLoading(false);
       } else if(err.response.status === 406) {
         setErrors(e => {
           return [ ...new Set<ValidationError>([ ...e, ...
             (err.response.data ?? [])
           ])];
-        });
-        setIsLoading(false);
-      } else if(err.response.status === 401) {
-        setErrors(e => {
-          return [ ...new Set<ValidationError>([ ...e, {
-            id: "login",
-            message: err.response.data.message
-          }])];
         });
         setIsLoading(false);
       };
@@ -90,13 +92,19 @@ function AppProvider ({ children }: AppProviderProps) {
 
   const login = useCallback(async(credentials: Credentials) => {
     setIsLoading(true);
-    await api.post("/user/login", credentials).then(({ data }) => {
+    const canRedirect = await api.post("/user/login", credentials).then(({ data }) => {
       api.defaults.headers["authorization"] = "Bearer " + data.token;
       setToken(data.token);
       setUser(data.user);
-      router.asPath === "/" && router.push("/app/dashboard");
       setIsLoading(false);
-    }).catch(() => {});
+      return true;
+    }).catch(() => false);
+    
+    if(canRedirect) {
+      router.push("/app/dashboard");
+    };
+
+    setIsLoading(false);
   }, [token, setUser]);
 
   const logout = useCallback(async() => {
@@ -104,6 +112,7 @@ function AppProvider ({ children }: AppProviderProps) {
     destroyCookie(null, "token");
     setToken(null);
     setUser(null);
+    return true;
   }, [token, setUser]);
 
   return (
