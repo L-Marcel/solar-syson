@@ -19,7 +19,6 @@ export function middleware(req: NextRequest) {
 
     throw new Error(res.statusText);
   }).then(res => {
-    console.log(res, "middleware");
     if(res.haveSubscription) {
       return NextResponse.next();
     };
