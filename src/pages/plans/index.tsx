@@ -42,7 +42,7 @@ function Plans({ subscriptions }: PlansProps) {
         />
       });
     };
-  }, [router]);
+  }, [router, toast]);
 
   
   async function onSelectPlan(s: Subscription) {

@@ -53,7 +53,7 @@ function Login() {
     };
 
     setIsLoading(false);
-  }, [router]);
+  }, [router, toast]);
 
   return (
     <PageContainer withoutBrand={false}>
