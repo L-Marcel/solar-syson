@@ -3,7 +3,7 @@ import { useIsLoading } from "../../hooks/useIsLoading";
 
 function LoadingBar() {
   const { isLoading } = useIsLoading();
-  console.log(isLoading);
+
   if(isLoading) {
     return (
       <Progress 

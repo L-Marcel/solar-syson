@@ -15,7 +15,10 @@ const icons = {
   "success": i.FiCheckCircle,
   "error": i.BiError,
   "info": i.VscInfo,
-  "warning": i.MdNearbyError
+  "warning": i.MdNearbyError,
+  "list": i.AiOutlineUnorderedList,
+  "exit": i.ImExit,
+  "home": i.IoHome
 };
 
 interface IconProps extends ChakraIconProps {
@@ -24,7 +27,7 @@ interface IconProps extends ChakraIconProps {
 
 function Icon({ icon, ...rest }: IconProps) {
   return (
-    <ChakraIcon as={icons[icon]} {...rest}/>
+    <ChakraIcon display="block" as={icons[icon]} {...rest}/>
   );
 };
 

@@ -7,7 +7,7 @@ import { Button } from "../../components/Button";
 import { Icon } from "../../components/Icon";
 import { PageContainer } from "../../components/PageContainer";
 import { CustomToast } from "../../components/Toast/CustomToast";
-import { useUser } from "../../hooks/useUser";
+import { useToken } from "../../hooks/useToken";
 import { api } from "../../service/api";
 import { boxShadow } from "../../theme/effects/shadow";
 
@@ -28,6 +28,7 @@ interface PlansProps {
 };
 
 function Plans({ subscriptions }: PlansProps) {
+  const token = useToken();
   const router = useRouter();
   const toast = useToast();
 
@@ -46,15 +47,23 @@ function Plans({ subscriptions }: PlansProps) {
 
   
   async function onSelectPlan(s: Subscription) {
-    await api.post("/user/subscription/session", {
-      subscription: s
-    }).then(({ data }) => {
-      router.replace(data.url);
-    });
+    if(token) {
+      await api.post("/user/subscription/session", {
+        subscription: s
+      }).then(({ data }) => {
+        router.replace(data.url);
+      });
+    } else {
+      router.push("/");
+    };
   };
 
   return (
-    <PageContainer withoutBrand={false} brandText="-> Escolha seu plano">
+    <PageContainer 
+      withoutBrand={false}
+      withoutRootButton={false}
+      brandText="-> Escolha seu plano"
+    >
       <SimpleGrid
         minChildWidth={250}
         columns={[1, 1, 1, 3]}

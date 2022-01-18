@@ -20,6 +20,7 @@ function Login() {
   const { errors, onClearError } = useErrors();
   const { setIsLoading } = useIsLoading();
 
+  const { isLoading } = useIsLoading();
   const router = useRouter();
   const toast = useToast();
   const login = useLogin();
@@ -48,8 +49,10 @@ function Login() {
 
     const token = parseCookies(null, "token");
 
-    if(token["token"]) {
-      router.push("/app/dashboard");
+    if(token["token"] && Boolean(token["token"])) {
+      router.push("/app/dashboard").then(() => {
+        setIsLoading(false);
+      });
     };
 
     setIsLoading(false);
@@ -81,6 +84,7 @@ function Login() {
           <Link color="primary.600">Ainda não tem uma conta?</Link>
         </NextLink>
         <Button
+          disabled={isLoading}
           onClick={() => login(credentials)}
         >
           Entrar

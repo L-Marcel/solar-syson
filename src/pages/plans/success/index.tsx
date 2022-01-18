@@ -1,10 +1,10 @@
 import { Heading, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { Button } from "../../components/Button";
-import { Icon } from "../../components/Icon";
-import { PageContainer } from "../../components/PageContainer";
+import { Button } from "../../../components/Button";
+import { Icon } from "../../../components/Icon";
+import { PageContainer } from "../../../components/PageContainer";
 
-export default function Success() {
+function Success() {
   const router = useRouter();
 
   return (
@@ -36,3 +36,5 @@ export default function Success() {
     </PageContainer>
   );
 };
+
+export default Success;

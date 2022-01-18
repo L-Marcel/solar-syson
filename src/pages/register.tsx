@@ -6,8 +6,10 @@ import { PageContainer } from "../components/PageContainer";
 import { ChangeEvent, useState } from "react";
 import { api } from "../service/api";
 import Router from "next/router";
+import { useIsLoading } from "../hooks/useIsLoading";
 
 function Register() {
+  const { isLoading, setIsLoading } = useIsLoading();
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [credentials, setCredentials] = useState<RegisterCredentials>({
     email: "",
@@ -17,8 +19,9 @@ function Register() {
   });
 
   async function handleSubmit() {
-    await api.post("/user", credentials).then(() => {
-      Router.push("/?toast=created");
+    setIsLoading(true);
+    const canRedirect = await api.post("/user", credentials).then(() => {
+      setIsLoading(false);
     }).catch(err => {
       if(err.response.status === 406) {
         setErrors(e => {
@@ -27,7 +30,13 @@ function Register() {
           ])];
         });
       };
+      setIsLoading(false);
+      return false;
     });
+
+    if(canRedirect) {
+      Router.push("/?toast=created");
+    };
   };
 
   function onChangeCredentials(e: ChangeEvent<HTMLInputElement>) {
@@ -83,7 +92,10 @@ function Register() {
         <NextLink href="/" passHref>
           <Link color="primary.600">Já possui uma conta?</Link>
         </NextLink>
-        <Button onClick={handleSubmit} disabled={errors.length >= 1}>
+        <Button 
+          onClick={handleSubmit} 
+          disabled={errors.length >= 1 || isLoading}
+        >
           Registrar
         </Button>
       </VStack>

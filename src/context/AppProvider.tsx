@@ -1,7 +1,7 @@
 
 import { AxiosError } from "axios";
 import { useRouter } from "next/router";
-import { destroyCookie, setCookie } from "nookies";
+import { parseCookies, setCookie } from "nookies";
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import { createContext } from "use-context-selector";
 import createPersistedState from "use-persisted-state";
@@ -12,20 +12,31 @@ interface AppProviderProps {
 
 export const appContext = createContext({} as AppContext);
 
-const useTokenState = createPersistedState('token');
 const useUserState = createPersistedState('user');
 
 function AppProvider ({ children }: AppProviderProps) {
   const router = useRouter();
   
   const [errors, setErrors] = useState<ValidationError[]>([]);
-  const [user, setUser] = useUserState<User>();
-  const [token, setToken] = useTokenState<string | boolean>(false);
+  const [user, setUser] = useUserState<User | false>(false);
+  const [token, setToken] = useState<string | false>(false);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if(token && token !== null) {
-      setCookie(null, "token", token);
+    let cookies = parseCookies();
+
+    if(cookies["token"] && !token) {
+      setIsLoading(true);
+      api.get(`${process.env.NEXT_PUBLIC_API_URL}/user/subscription`, {
+        headers: {
+          "Authorization": "Bearer " + cookies["token"]
+        }
+      }).then(res => {
+        setToken(cookies["token"]);
+      }).catch(() => {
+        setCookie(null, "token", undefined);
+        setToken(false);
+      });
     };
   }, [token]);
 
@@ -41,7 +52,7 @@ function AppProvider ({ children }: AppProviderProps) {
           });  
         };
 
-        if(token) {
+        if(token && Boolean(token)) {
           api.defaults.headers["authorization"] = "Bearer " + token;
           return new Promise((resolve, reject) => {
             err.request.headers["authorization"] = "Bearer " + token;
@@ -82,7 +93,7 @@ function AppProvider ({ children }: AppProviderProps) {
     setErrors([])
   , [setErrors]);
 
-  const _setToken = useCallback((token: string | boolean) => setToken(token), [
+  const _setToken = useCallback((token: string | false) => setToken(token), [
     setToken
   ]);
 
@@ -94,25 +105,29 @@ function AppProvider ({ children }: AppProviderProps) {
     setIsLoading(true);
     const canRedirect = await api.post("/user/login", credentials).then(({ data }) => {
       api.defaults.headers["authorization"] = "Bearer " + data.token;
+      setCookie(null, "token", data.token);
       setToken(data.token);
       setUser(data.user);
-      setIsLoading(false);
       return true;
-    }).catch(() => false);
+    }).catch(() => {
+      return false;
+    });
     
     if(canRedirect) {
-      router.push("/app/dashboard");
+      router.push("/app/dashboard").then(() => {
+        setIsLoading(false);
+      });
     };
-
-    setIsLoading(false);
   }, [token, setUser]);
 
   const logout = useCallback(async() => {
-    api.defaults.headers["authorization"] = null;
-    destroyCookie(null, "token");
-    setToken(null);
-    setUser(null);
-    return true;
+    router.push("/").then(() => {
+      api.defaults.headers["authorization"] = undefined;
+      setCookie(null, "token", undefined);
+      setToken(false);
+      setUser(false);
+      console.log("f");
+    });
   }, [token, setUser]);
 
   return (

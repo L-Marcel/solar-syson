@@ -1,18 +1,22 @@
-import { Divider, Heading, Text } from "@chakra-ui/react";
+import { Divider, Heading, HStack, Text } from "@chakra-ui/react";
 
 interface BrandProps {
   withoutDivider?: boolean;
   text?: string;
+  menu?: JSX.Element;
 };
 
-function Brand({ withoutDivider = false, text }: BrandProps) {
+function Brand({ withoutDivider = false, text, menu }: BrandProps) {
   return (
     <>
-      <Heading
-        color="primary.700"
-      >
-        Solar <span>Sys</span>.on
-      </Heading>
+      <HStack spacing={2}>
+        {menu}
+        <Heading
+          color="primary.700"
+        >
+          Solar <span>Sys</span>.on
+        </Heading>
+      </HStack>
       { !withoutDivider && <Divider w={300} h={2} color="primary.600"/> }
       { text && <Text
         mt={2}

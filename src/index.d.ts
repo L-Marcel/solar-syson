@@ -4,12 +4,12 @@ declare type ClockTimer = {
 };
 
 declare type AppContext = {
-  user: User;
+  user: User | false;
   isLoading: boolean;
   login: (credentials: Credentials) => void;
-  logout: () => Promise<boolean>;
-  token: string;
-  setToken: (token: string | boolean) => void;
+  logout: () => void;
+  token: string | false;
+  setToken: (token: string | false) => void;
   setIsLoading: (isLoading: boolean) => void;
   errors: ValidationError[];
   onClearError: (id: string) => void;
