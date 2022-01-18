@@ -31,7 +31,7 @@ function Menu({ ...rest }: MenuProps) {
       
       if(e) {
         if (e.altKey) {
-          setIsOpen(isOpen => true);
+          setIsOpen(true);
         }
         
         if (e.altKey && e.key.toLowerCase() == "e") { //crtl + del

@@ -103,21 +103,17 @@ function AppProvider ({ children }: AppProviderProps) {
 
   const login = useCallback(async(credentials: Credentials) => {
     setIsLoading(true);
-    const canRedirect = await api.post("/user/login", credentials).then(({ data }) => {
+    await api.post("/user/login", credentials).then(({ data }) => {
       api.defaults.headers["authorization"] = "Bearer " + data.token;
       setCookie(null, "token", data.token);
       setToken(data.token);
       setUser(data.user);
-      return true;
-    }).catch(() => {
-      return false;
-    });
-    
-    if(canRedirect) {
       router.push("/app/dashboard").then(() => {
         setIsLoading(false);
       });
-    };
+    }).catch(() => {
+      setIsLoading(false);
+    });
   }, [token, setUser]);
 
   const logout = useCallback(async() => {
@@ -126,7 +122,6 @@ function AppProvider ({ children }: AppProviderProps) {
       setCookie(null, "token", undefined);
       setToken(false);
       setUser(false);
-      console.log("f");
     });
   }, [token, setUser]);
 
